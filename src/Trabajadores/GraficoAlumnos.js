@@ -8,7 +8,6 @@ const GraficoAlumnos = () => {
     const [alumnos, setAlumnos] = useState([]);
 
     useEffect(() => {
-        // Función para obtener los datos de la API
         const obtenerAlumnos = async () => {
             try {
                 const response = await fetch('https://alex.starcode.com.mx/apiAlumnos.php');
@@ -28,26 +27,21 @@ const GraficoAlumnos = () => {
             <div className="row">
                 {alumnos.map((alumno) => {
                     const practicas = alumno.practicas;
-                    const promedio = (
-                        (parseInt(practicas.practica_hilos) +
-                            parseInt(practicas.practica_socket) +
-                            parseInt(practicas.practica_node) +
-                            parseInt(practicas.practica_react) +
-                            parseInt(practicas.practica_git)) / 5
-                    ).toFixed(2);
+                    const calificaciones = [
+                        parseInt(practicas.practica_hilos),
+                        parseInt(practicas.practica_socket),
+                        parseInt(practicas.practica_node),
+                        parseInt(practicas.practica_react),
+                        parseInt(practicas.practica_git),
+                    ];
+                    const promedio = (calificaciones.reduce((a, b) => a + b, 0) / calificaciones.length).toFixed(2);
 
                     const data = {
                         labels: ['Hilos', 'Socket', 'Node', 'React', 'Git'],
                         datasets: [
                             {
                                 label: 'Calificaciones',
-                                data: [
-                                    practicas.practica_hilos,
-                                    practicas.practica_socket,
-                                    practicas.practica_node,
-                                    practicas.practica_react,
-                                    practicas.practica_git,
-                                ],
+                                data: calificaciones,
                                 backgroundColor: 'rgba(75, 192, 192, 0.6)',
                             },
                         ],
